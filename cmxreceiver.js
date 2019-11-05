@@ -12,24 +12,25 @@ A basic web service to accept CMX data from a Cisco Meraki network
 */
 
 // CHANGE THESE CONFIGURATIONS to match your CMX configuration
-var port = process.env.OVERRIDE_PORT || process.env.PORT || 1890;
-var secret = process.env.SECRET || 'herma123';
-var validator = process.env.VALIDATOR || '9c86aa5639b285e4df551ed15623c01ce01f6f50';
-var route = process.env.ROUTE || '/cmx';
+const port = process.env.OVERRIDE_PORT || process.env.PORT || 1890;
+const secret = process.env.SECRET || 'herma123';
+const validator = process.env.VALIDATOR || '9c86aa5639b285e4df551ed15623c01ce01f6f50';
+const route = process.env.ROUTE || '/cmx';
 
 const responses = [];
 // All CMX JSON data will end up here. Send it to a database or whatever you fancy.
 // data format specifications: https://documentation.meraki.com/MR/Monitoring_and_Reporting/CMX_Analytics#Version_2.0
 function cmxData(data) {
-	console.log('JSON Feed: ' + JSON.stringify(data, null, 2));
+  console.log(`JSON Feed: ${JSON.stringify(data, null, 2)}`);
 }
 
-//**********************************************************
+//* *********************************************************
 
 // Express Server
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
+const express = require('express');
+
+const app = express();
+const bodyParser = require('body-parser');
 
 //
 app.use(bodyParser.json({ limit: '25mb' }));
@@ -37,32 +38,35 @@ app.use(bodyParser.json({ limit: '25mb' }));
 // CMX Location Protocol, see https://documentation.meraki.com/MR/Monitoring_and_Reporting/CMX_Analytics#API_Configuration
 //
 // Meraki asks for us to know the secret
-app.get(route, function(req, res) {
-	console.log('Validator = ' + validator);
-	res.status(200).send(validator);
+app.get(route, (req, res) => {
+  console.log(`Validator = ${validator}`);
+  res.status(200).send(validator);
 });
 
 app.get('/', (req, res) => {
-	res.status(200).send('Hermano');
-})
+  res.status(200).send('Hermano');
+});
 //
 // Getting the flow of data every 1 to 2 minutes
-app.post(route, function(req, res) {
-	if (req.body.secret == secret) {
-		console.log('Secret verified');
+app.post(route, (req, res) => {
+  if (req.body.secret == secret) {
+    console.log('Secret verified');
     cmxData(req.body);
     responses.push(req.body);
-	} else {
-		console.log('Secret was invalid');
-	}
-	res.status(200);
+  } else {
+    console.log('Secret was invalid');
+  }
+  res.status(200);
 });
 
-app.get('/response',(req, res) => {
-  res.status(200).send(responses);
-})
+app.get('/response', (req, res) => {
+  res.status(200).send({
+    responses,
+    length: responses.length,
+  });
+});
 
 // Start server
-app.listen(port, function() {
-	console.log('CMX Receiver listening on port: ' + port);
+app.listen(port, () => {
+  console.log(`CMX Receiver listening on port: ${port}`);
 });

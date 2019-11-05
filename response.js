@@ -7,7 +7,7 @@ requestify.get('https://cmx-test.herokuapp.com/response').then((res) => { // esl
   // console.log(res.getBody());
   const result = res.getBody();
   // console.log({ result });
-  analize(result);
+  analize(result.responses);
 }).catch((err) => {
   console.log(err);
 });
@@ -25,10 +25,11 @@ const analize = (a) => {
         response[obs.clientMac] = {
           manufacturer: obs.manufacturer,
           location: null,
+          seenTime: new Date(obs.seenTime),
         };
       }
       if (obs.location !== null) response[obs.clientMac].location = obs.location;
     }
   }
-  console.log(Object.keys(response), Object.keys(response).length);
+  console.log(Object.keys(response), Object.keys(response).length, response);
 };

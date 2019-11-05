@@ -17,6 +17,7 @@ var secret = process.env.SECRET || 'herma123';
 var validator = process.env.VALIDATOR || '9c86aa5639b285e4df551ed15623c01ce01f6f50';
 var route = process.env.ROUTE || '/cmx';
 
+const responses = [];
 // All CMX JSON data will end up here. Send it to a database or whatever you fancy.
 // data format specifications: https://documentation.meraki.com/MR/Monitoring_and_Reporting/CMX_Analytics#Version_2.0
 function cmxData(data) {
@@ -49,12 +50,17 @@ app.get('/', (req, res) => {
 app.post(route, function(req, res) {
 	if (req.body.secret == secret) {
 		console.log('Secret verified');
-		cmxData(req.body);
+    cmxData(req.body);
+    responses.push(req.body);
 	} else {
 		console.log('Secret was invalid');
 	}
 	res.status(200);
 });
+
+app.get('/response',(req, res) => {
+  res.status(200).send(responses);
+})
 
 // Start server
 app.listen(port, function() {

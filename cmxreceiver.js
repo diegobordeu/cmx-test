@@ -65,7 +65,7 @@ app.post(route, (req, res) => {
 const filterData = (data) => {
   const TIME_FRAME = new Date().getTime() - 10 * 60 * 1000;
   const response = [];
-  const { observations } = data;
+  const { observations } = data.data;
   for (let i = 0; i < observations.length; i++) {
     if (observations[i].seenTime.getTime() > TIME_FRAME) {
       response.push(observations[i]);

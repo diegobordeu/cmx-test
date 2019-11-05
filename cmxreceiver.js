@@ -67,7 +67,7 @@ const filterData = (data) => {
   const response = [];
   const { observations } = data.data;
   for (let i = 0; i < observations.length; i++) {
-    if (observations[i].seenTime.getTime() > TIME_FRAME) {
+    if (new Date(observations[i].seenTime).getTime() > TIME_FRAME) {
       response.push(observations[i]);
       console.log('++++++++++++++++++++++++++++++++');
     }

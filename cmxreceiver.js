@@ -40,6 +40,10 @@ app.get(route, function(req, res) {
 	console.log('Validator = ' + validator);
 	res.status(200).send(validator);
 });
+
+app.get('/', (req, res) => {
+	res.status(200).send('Hermano');
+})
 //
 // Getting the flow of data every 1 to 2 minutes
 app.post(route, function(req, res) {

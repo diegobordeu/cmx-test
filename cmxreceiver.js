@@ -66,12 +66,13 @@ const filterData = (data) => {
   const TIME_FRAME = new Date().getTime() - 10 * 60 * 1000;
   const response = [];
   const { observations } = data.data;
+  console.log(`inicial length ${observations.length}`);
   for (let i = 0; i < observations.length; i++) {
     if (new Date(observations[i].seenTime).getTime() > TIME_FRAME) {
       response.push(observations[i]);
-      console.log('++++++++++++++++++++++++++++++++');
     }
   }
+  console.log(`final length ${response.length}`);
   return response;
 };
 

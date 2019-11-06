@@ -5,15 +5,27 @@ const fs = require('fs');
 
 const TIME_FRAME = new Date().getTime() - 10 * 60 * 1000;
 
-requestify.get('https://cmx-test.herokuapp.com/response').then((res) => { // eslint-disable-line
+// requestify.get('https://cmx-test.herokuapp.com/response').then((res) => { // eslint-disable-line
+//   // console.log(res.getBody());
+//   const result = res.getBody();
+//   // console.log({ result });
+//   analize(result.responses);
+// }).catch((err) => {
+//   console.log(err);
+// });
+
+
+requestify.get('https://cmx-test.herokuapp.com/temp').then((res) => { // eslint-disable-line
   // console.log(res.getBody());
   const result = res.getBody();
-  // console.log({ result });
-  analize(result.responses);
+  console.log({
+    result,
+    length: result.length,
+  });
+  // analize(result.responses);
 }).catch((err) => {
   console.log(err);
 });
-
 
 const analize = (a) => { // eslint-disable-line
   a = a || [];

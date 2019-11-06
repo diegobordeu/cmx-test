@@ -53,7 +53,7 @@ app.get('/', (req, res) => {
 app.post(route, (req, res) => {
   if (req.body.secret == secret) {
     console.log('Secret verified');
-    cmxData(req.body);
+    // cmxData(req.body);
     responses.push(req.body);
     temp = filterData(req.body);
   } else {

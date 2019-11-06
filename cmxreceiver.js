@@ -63,7 +63,7 @@ app.post(route, (req, res) => {
 });
 
 const filterData = (data) => {
-  const TIME_FRAME = new Date().getTime() - 10 * 60 * 1000;
+  const TIME_FRAME = new Date().getTime() - 2 * 60 * 1000;
   const response = [];
   const { observations } = data.data;
   console.log(`inicial length ${observations.length}`);
